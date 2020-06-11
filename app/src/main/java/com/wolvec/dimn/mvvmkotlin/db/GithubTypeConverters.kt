@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.room.TypeConverter
 import java.lang.NumberFormatException
 
-object GithubTypeConverters {
+object GithubTypeConverters {//esta clase sirve para convertir los tipos de un objeto en sqlite
     @TypeConverter
     @JvmStatic
     fun stringToIntList(data: String?): List<Int>? {
