@@ -19,7 +19,7 @@ data class Repo (
     @field:SerializedName("description")
     val descripcion: String?,
     @field:SerializedName("owner")
-    @field:Embedded(prefix = "owner")//sirve para embeber una clase en otra en este caso owner estara enbebida en la clase Repo
+    @field:Embedded(prefix = "owner_")//sirve para embeber una clase en otra en este caso owner estara enbebida en la clase Repo
     val owner: Owner,
     @field:SerializedName("stargazers_count")
     val stars: Int
