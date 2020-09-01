@@ -6,10 +6,10 @@ import com.wolvec.dimn.mvvmkotlin.db.GithubTypeConverters
 
 @Entity(primaryKeys = ["query"])
 @TypeConverters(GithubTypeConverters::class)
-class RepoSearchResult(
-    val query: String,
-    val reporIds: List<Int>,
-    val totalCount: Int,
-    val next: Int?
+class RepoSearchResult(//sirve para guardar los resultados en el sqlite
+    val query: String,//ej:https://api.github.com/search/repositories?q=tetris
+    val reporIds: List<Int>,//ej: List<Int>{1,2,3,4}...los ids de los repositorios encontrados
+    val totalCount: Int,// el total de repositorios
+    val next: Int?//el numero de pagina siguiente
 ) {
 }

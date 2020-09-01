@@ -42,10 +42,10 @@ data class ApiSuccessResponse<T>(
 ): ApiResponse<T>(){
     constructor(body: T, linksHeaders: String?): this(
         body = body,
-        links = linksHeaders?.extractLinks()?: emptyMap()
+        links = linksHeaders?.extractLinks()?: emptyMap()//Links de la paginacion(next y prev)
     )
 
-    val nextPage: Int? by lazy ( LazyThreadSafetyMode.NONE ){
+    val nextPage: Int? by lazy ( LazyThreadSafetyMode.NONE ){//devuelve el numero de la pag sig
         links[NEXT_LINK]?.let{
                 next->
             val matcher = PAGE_PATTERN.matcher(next)
@@ -62,18 +62,19 @@ data class ApiSuccessResponse<T>(
     }
 
     companion object{
-        private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")
-        private val PAGE_PATTERN = Pattern.compile("\\bpage=(\\d+)")
+        //https://api.github.com/search/repositories?q=tetris&page=1>; rel="prev", <https://api.github.com/search/repositories?q=tetris&page=3>; rel="next"
+        private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")//patron para identificar a esta parte(https://api.github.com/search/repositories?q=tetris)
+        private val PAGE_PATTERN = Pattern.compile("\\bpage=(\\d+)")//patron para identificar a esta parte(page=1)
         private const val NEXT_LINK = "next"
 
-        private fun String.extractLinks(): Map<String, String>{
+        private fun String.extractLinks(): Map<String, String>{//Extrae los links
             val links = mutableMapOf<String, String>()
-            val matcher = LINK_PATTERN.matcher(this)
+            val matcher = LINK_PATTERN.matcher(this)//se aloja los links que se encuentren en links header y q coincidan con LINK_PATTERN
 
-            while (matcher.find()){
-                val count = matcher.groupCount()
+            while (matcher.find()){//el metodo find de matchet intenta encontrar la sig, secuencia q cumple el patron y devuelve un boolean si la ha encontrado
+                val count = matcher.groupCount()//matcher.groupCount() devuelve el numero de veces q ha encontrado el patron
                 if(count == 2){
-                    links[matcher.group(2)] = matcher.group(1)
+                    links[matcher.group(2)] = matcher.group(1)//ej: links["next"] = https://api.github.com/search/repositories?q=tetris&page=3
                 }
             }
             return links
