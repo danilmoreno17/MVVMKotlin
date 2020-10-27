@@ -23,6 +23,6 @@ object GithubTypeConverters {//esta clase sirve para convertir los tipos de un o
     @TypeConverter
     @JvmStatic
     fun intListToString(ints: List<Int>?): String?{
-        return ints?.joinToString { "," }
+        return ints?.joinToString ( "," )
     }
 }
